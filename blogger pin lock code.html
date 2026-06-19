@@ -1,0 +1,171 @@
+<style type='text/css'>
+/*<![CDATA[*/
+    html, body.lock-active {
+        overflow: hidden !important;
+        height: 100% !important;
+    }
+    #login-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1e1e2f 0%, #0f0c1b 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999999 !important;
+        font-family: 'Poppins', sans-serif;
+    }
+    .login-container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 40px 30px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 380px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        animation: lockFadeIn 0.6s ease-out;
+        box-sizing: border-box;
+    }
+    @keyframes lockFadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .icon-box {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #8a7355, #c5a880);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 20px;
+        box-shadow: 0 8px 20px rgba(138, 115, 85, 0.4);
+    }
+    .icon-box svg { width: 30px; height: 30px; fill: #fff; }
+    .login-container h2 { color: #fff; margin: 0 0 8px 0; font-size: 1.6rem; font-weight: 600; }
+    .login-container p { color: #b3b3b3; font-size: 0.9rem; margin: 0 0 30px 0; }
+    .input-group { margin-bottom: 20px; }
+    .input-group input {
+        width: 100%;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        box-sizing: border-box;
+        color: #fff;
+        font-size: 1.1rem;
+        letter-spacing: 3px;
+        text-align: center;
+        outline: none;
+    }
+    .input-group input:focus { border-color: #c5a880; background: rgba(255, 255, 255, 0.15); }
+    #error-msg { color: #ff4d4d; font-size: 0.85rem; margin: -10px 0 15px 0; display: none; font-weight: 500; }
+    .btn-lock {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+        display: block;
+    }
+    .btn-primary-lock { background: linear-gradient(135deg, #8a7355, #c5a880); color: #fff; }
+    .btn-whatsapp-lock {
+        background: transparent;
+        color: #25D366;
+        border: 1px solid rgba(37, 211, 102, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+    .btn-whatsapp-lock svg { width: 18px; height: 18px; fill: #25D366; }
+    @keyframes lockShake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        75% { transform: translateX(8px); }
+    }
+/*]]>*/
+</style>
+
+<script type='text/javascript'>
+//<![CDATA[
+    const CORRECT_PIN = "1234"; // 🛠️ APNA PIN BADLEIN
+
+    (function() {
+        if (sessionStorage.getItem("gallery_unlocked") === "true") {
+            document.write('<style>#login-screen { display: none !important; }</style>');
+        } else {
+            document.write('<style>body { overflow: hidden !important; }</style>');
+            document.addEventListener("DOMContentLoaded", function() {
+                document.body.classList.add("lock-active");
+                
+                // HTML Injection dynamically to bypass XML parser error
+                const loginDiv = document.createElement("div");
+                loginDiv.id = "login-screen";
+                loginDiv.innerHTML = `
+                    <div class="login-container">
+                        <div class="icon-box">
+                            <svg viewBox="0 0 24 24"><path d="M18,8H17V6A5,5,0,0,0,7,6V8H6a3,3,0,0,0,3,3V18a3,3,0,0,0,3,3h4a3,3,0,0,0,3-3V11A3,3,0,0,0,18,8ZM9,6a3,3,0,0,1,6,0V8H9V6Zm8,12a1,1,0,0,1-1,1H12a1,1,0,0,1-1-1V11a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1Z"/></svg>
+                        </div>
+                        <h2>Private Gallery</h2>
+                        <p>This page is password protected</p>
+                        <div class="input-group">
+                            <input type="password" id="pin-input" placeholder="ENTER PIN" maxlength="6"/>
+                        </div>
+                        <div id="error-msg">❌ Invalid PIN! Please try again.</div>
+                        <button class="btn-lock btn-primary-lock" id="unlock-btn">Unlock Access</button>
+                        <button class="btn-lock btn-whatsapp-lock" id="admin-btn">
+                            <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.528 1.977 14.053.953 11.42.953c-5.44 0-9.866 4.371-9.87 9.8cc-.001 1.748.463 3.454 1.343 4.966l-.41 1.502.41-.41-.41 1.502 1.558-.409zm11.332-6.523c-.305-.153-1.805-.891-2.084-.993-.279-.101-.482-.153-.684.153-.203.306-.787.993-.965 1.197-.177.203-.355.229-.66.076-.304-.153-1.287-.475-2.451-1.514-.906-.809-1.517-1.809-1.695-2.115-.178-.305-.019-.47.133-.621.137-.136.305-.356.457-.534.151-.178.203-.306.305-.509.101-.203.051-.381-.025-.534-.076-.153-.684-1.652-.938-2.263-.247-.595-.5-.514-.684-.523-.177-.009-.38-.01-.583-.01-.203 0-.533.076-.812.381-.279.305-1.066 1.042-1.066 2.542 0 1.501 1.091 2.949 1.243 3.153.153.204 2.147 3.279 5.202 4.6c.726.315 1.293.504 1.736.645.73.232 1.393.199 1.917.12.584-.087 1.805-.737 2.058-1.45.254-.713.254-1.323.178-1.45-.076-.127-.279-.203-.584-.356z"/></svg>
+                            Ask Admin for PIN
+                        </button>
+                    </div>
+                `;
+                document.body.insertBefore(loginDiv, document.body.firstChild);
+
+                // Event Listeners
+                document.getElementById("unlock-btn").onclick = verifyPIN;
+                document.getElementById("admin-btn").onclick = askAdmin;
+                document.getElementById("pin-input").onkeydown = function(e) {
+                    if(e.key === "Enter") verifyPIN();
+                };
+            });
+        }
+    })();
+
+    function verifyPIN() {
+        const userInput = document.getElementById("pin-input").value;
+        const errorMsg = document.getElementById("error-msg");
+
+        if (userInput === CORRECT_PIN) {
+            sessionStorage.setItem("gallery_unlocked", "true");
+            document.body.classList.remove("lock-active");
+            
+            const screen = document.getElementById("login-screen");
+            screen.style.transition = "all 0.4s ease";
+            screen.style.opacity = "0";
+            
+            setTimeout(() => { screen.style.display = "none"; }, 400);
+        } else {
+            errorMsg.style.display = "block";
+            document.getElementById("pin-input").value = "";
+            const container = document.querySelector('.login-container');
+            container.style.animation = "none";
+            setTimeout(() => { container.style.animation = "lockShake 0.3s"; }, 10);
+        }
+    }
+
+    function askAdmin() {
+        const message = encodeURIComponent("Hello Admin, mujhe wedding gallery ka access PIN chahiye.");
+        window.open("https://wa.me/7255813302?text=" + message, '_blank');
+    }
+//]]>
+</script>
