@@ -1,0 +1,197 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realistic Calculator UI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="calculator">
+        <!-- Display Screen -->
+        <div class="display">
+            <div class="previous" id="previous"></div>
+            <div class="current" id="current">0</div>
+        </div>
+
+        <!-- Buttons Grid -->
+        <div class="buttons">
+            <button class="clear">AC</button>
+            <button class="delete">DEL</button>
+            <button class="operator">%</button>
+            <button class="operator">÷</button>
+
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button class="operator">×</button>
+
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button class="operator">-</button>
+
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button class="operator">+</button>
+
+            <button class="zero">0</button>
+            <button>.</button>
+            <button class="equal">=</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<style>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+.calculator {
+    width: 360px;
+    padding: 20px;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.display {
+    height: 90px;
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 16px;
+    text-align: right;
+    margin-bottom: 20px;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.previous {
+    color: #64748b;
+    font-size: 16px;
+    height: 24px;
+    overflow: hidden;
+}
+
+.current {
+    font-size: 36px;
+    font-weight: 700;
+    color: #0f172a;
+    overflow: hidden;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+button {
+    height: 64px;
+    border: none;
+    border-radius: 16px;
+    font-size: 20px;
+    font-weight: 600;
+    background: #fff;
+    cursor: pointer;
+    transition: .2s;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+    color: #0f172a;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+.operator {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.equal {
+    background: #10b981;
+    color: #fff;
+    grid-row: span 2;
+    height: auto;
+}
+
+.zero {
+    grid-column: span 2;
+}
+
+.clear {
+    background: #ef4444;
+    color: #fff;
+}
+
+.delete {
+    background: #f59e0b;
+    color: #fff;
+}
+</style><script>const previous = document.getElementById("previous");
+const current = document.getElementById("current");
+let expression = "";
+
+document.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const value = btn.innerText;
+
+        if (value === "AC") {
+            expression = "";
+            current.innerText = "0";
+            previous.innerText = "";
+        } 
+        else if (value === "DEL") {
+            expression = expression.slice(0, -1);
+            current.innerText = expression || "0";
+        } 
+        else if (value === "=") {
+            try {
+                previous.innerText = expression;
+                // Standard math evaluation ke liye symbols ko replace karna
+                let formattedExpression = expression
+                    .replace(/×/g, "*")
+                    .replace(/÷/g, "/")
+                    .replace(/%/g, "/100");
+                
+                let result = eval(formattedExpression);
+                current.innerText = result.toString();
+                expression = result.toString(); // Future calculation ke liye store kiya
+            } catch (error) {
+                current.innerText = "Error";
+                expression = "";
+            }
+        } 
+        else {
+            // Agar pehle sirf '0' hai toh replace karein, nahi toh append karein
+            if (expression === "" && !isNaN(value)) {
+                expression = value;
+            } else {
+                expression += value;
+            }
+            current.innerText = expression;
+        }
+    });
+});
+</script>
