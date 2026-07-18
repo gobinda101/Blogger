@@ -7,16 +7,62 @@
 <title><data:view.title/></title>
 
 <b:skin><![CDATA[
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#000;
-  color:#fff;
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: #fff;
 }
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:20px;
+
+* {
+  box-sizing: border-box;
+}
+
+body > .container,
+body .container,
+#outer-wrapper,
+#main-wrapper,
+#content-wrapper,
+#blog-wrapper,
+#header-wrapper,
+#footer-wrapper,
+#sidebar-wrapper,
+#main,
+#content {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px 16px;
+}
+
+main, section, article, .widget, .post-outer, .post, .blog-posts,
+.widget-content, .post-body-container, .post-body, .post-footer {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px 14px;
+  }
 }
 ]]></b:skin>
 </head>
