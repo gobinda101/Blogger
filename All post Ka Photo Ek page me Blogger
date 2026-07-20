@@ -318,7 +318,7 @@
       <!-- Live Filter Responsive Search Engine -->
       <div class="search-wrapper">
         <span class="search-icon">🔍</span>
-        <input type="text" id="sss-gallery-search" class="search-input" placeholder="Search logs by date or work details...">
+        <input type="text" id="sss-gallery-search" class="search-input" placeholder="Search Photo details...">
       </div>
     </div>
   </header>
@@ -326,8 +326,8 @@
   <!-- Homepage Welcoming Gradient Hero Showcase -->
   <section class="hero-section">
     <div class="hero-content">
-      <h1>Welcome To Our Official Work Showcase</h1>
-      <p>Explore real-time updates and project progress logs synchronized directly from our feed database.</p>
+      <h1>Welcome To Our Gallery</h1>
+      <p>Explore the best moment snapshoot for our Gallery</p>
     </div>
   </section>
 
